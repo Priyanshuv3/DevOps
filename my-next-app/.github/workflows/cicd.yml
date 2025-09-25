@@ -14,8 +14,8 @@ on:
 # Define jobs
 jobs:
   build-and-deploy:
-    # Use your self-hosted runner instead of GitHub’s hosted runners
-    runs-on: self-hosted
+    # Use GitHub-hosted runner
+    runs-on: ubuntu-latest
 
     steps:
       # ------------------------
@@ -38,7 +38,6 @@ jobs:
       # ------------------------
       - name: Install dependencies
         run: npm ci
-        # npm ci is preferred for CI pipelines (clean install, reproducible builds)
 
       # ------------------------
       # 4. Run Lint checks (optional but recommended)
@@ -61,8 +60,6 @@ jobs:
       # ------------------------
       # 7. Deploy (optional, depends on your infra)
       # ------------------------
-      # Example: copying `.next` build output somewhere
-      # Replace with your real deployment step (scp, rsync, docker build, etc.)
       - name: Deploy application
         run: |
           echo "🚀 Deployment step goes here"
