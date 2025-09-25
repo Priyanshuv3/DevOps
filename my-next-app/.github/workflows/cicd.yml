@@ -1,0 +1,69 @@
+name: Next.js CI/CD Pipeline
+
+# Trigger workflow on push or pull request to main or develop branches
+on:
+  push:
+    branches:
+      - production
+      - development
+  pull_request:
+    branches:
+      - production
+      - development
+
+# Define jobs
+jobs:
+  build-and-deploy:
+    # Use your self-hosted runner instead of GitHub’s hosted runners
+    runs-on: self-hosted
+
+    steps:
+      # ------------------------
+      # 1. Checkout repository
+      # ------------------------
+      - name: Checkout source code
+        uses: actions/checkout@v4
+
+      # ------------------------
+      # 2. Setup Node.js environment
+      # ------------------------
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18' # Match your Next.js project Node version
+          cache: 'npm'       # Enable caching for node_modules to speed up builds
+
+      # ------------------------
+      # 3. Install dependencies
+      # ------------------------
+      - name: Install dependencies
+        run: npm ci
+        # npm ci is preferred for CI pipelines (clean install, reproducible builds)
+
+      # ------------------------
+      # 4. Run Lint checks (optional but recommended)
+      # ------------------------
+      - name: Run lint
+        run: npm run lint
+
+      # ------------------------
+      # 5. Run Tests (if you have tests)
+      # ------------------------
+      - name: Run tests
+        run: npm test
+
+      # ------------------------
+      # 6. Build Next.js project
+      # ------------------------
+      - name: Build Next.js project
+        run: npm run build
+
+      # ------------------------
+      # 7. Deploy (optional, depends on your infra)
+      # ------------------------
+      # Example: copying `.next` build output somewhere
+      # Replace with your real deployment step (scp, rsync, docker build, etc.)
+      - name: Deploy application
+        run: |
+          echo "🚀 Deployment step goes here"
+          # Example: rsync -avz .next/ user@server:/var/www/next-app
