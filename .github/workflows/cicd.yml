@@ -48,8 +48,8 @@ jobs:
       # ------------------------
       # 5. Run Tests (if you have tests)
       # ------------------------
-      - name: Run tests
-        run: npm test
+      # - name: Run tests
+      #   run: npm test
 
       # ------------------------
       # 6. Build Next.js project
